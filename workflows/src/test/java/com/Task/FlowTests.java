@@ -1,7 +1,7 @@
-package com.template;
+package com.Task;
 
 import com.google.common.collect.ImmutableList;
-import com.template.flows.Responder;
+import com.Task.flows.Responder;
 import net.corda.testing.node.MockNetwork;
 import net.corda.testing.node.MockNetworkParameters;
 import net.corda.testing.node.StartedMockNode;
