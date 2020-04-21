@@ -2,17 +2,13 @@ package com.Task.contracts;
 
 import com.Task.states.TaskState;
 import com.sun.istack.NotNull;
-import javafx.concurrent.Task;
 import net.corda.core.contracts.Command;
 import net.corda.core.contracts.CommandData;
 import net.corda.core.contracts.Contract;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.transactions.LedgerTransaction;
-import org.dom4j.IllegalAddException;
-import java.awt.*;
 import java.security.PublicKey;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import static net.corda.core.contracts.ContractsDSL.requireThat;
 
