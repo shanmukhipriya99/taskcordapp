@@ -1,16 +1,14 @@
 package com.Task.flows;
 
 import co.paralleluniverse.fibers.Suspendable;
-import net.corda.core.flows.FlowException;
-import net.corda.core.flows.FlowLogic;
-import net.corda.core.flows.FlowSession;
-import net.corda.core.flows.InitiatedBy;
+import net.corda.core.flows.*;
+import net.corda.core.transactions.SignedTransaction;
 
 // ******************
 // * Responder flow *
 // ******************
-@InitiatedBy(Initiator.class)
-public class CATResponderFlow extends FlowLogic<Void> {
+@InitiatedBy(CATInitiatorFlow.class)
+public class CATResponderFlow extends FlowLogic<SignedTransaction> {
     private FlowSession counterpartySession;
 
     public CATResponderFlow(FlowSession counterpartySession) {
@@ -19,7 +17,7 @@ public class CATResponderFlow extends FlowLogic<Void> {
 
     @Suspendable
     @Override
-    public Void call() throws FlowException {
+    public SignedTransaction call() throws FlowException {
         // Responder flow logic goes here.
 
         return null;
