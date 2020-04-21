@@ -7,7 +7,7 @@ import net.corda.core.transactions.LedgerTransaction;
 // ************
 // * Contract *
 // ************
-public class TaskContract implements Contract {
+public class UOTContract implements Contract {
     // This is used to identify our contract when building a transaction.
     public static final String ID = "com.template.contracts.TemplateContract";
 

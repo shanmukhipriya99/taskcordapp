@@ -1,6 +1,6 @@
 package com.Task.states;
 
-import com.Task.contracts.TaskContract;
+import com.Task.contracts.CATContract;
 import net.corda.core.contracts.BelongsToContract;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.identity.AbstractParty;
@@ -12,7 +12,7 @@ import java.util.List;
 // *********
 // * State *
 // *********
-@BelongsToContract(TaskContract.class)
+@BelongsToContract(CATContract.class)
 public class TaskState implements ContractState {
     private final Party client;
     private final Party mainContractor;
