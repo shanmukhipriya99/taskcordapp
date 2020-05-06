@@ -19,7 +19,7 @@ public class CATResponderFlow extends FlowLogic<SignedTransaction> {
     @Override
     public SignedTransaction call() throws FlowException {
         // Responder flow logic goes here.
-
-        return null;
+        System.out.println("Task received from: " + counterpartySession.getCounterparty().getName().getOrganisation());
+        return subFlow(new ReceiveFinalityFlow(counterpartySession));
     }
 }
