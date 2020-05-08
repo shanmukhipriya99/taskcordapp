@@ -3,7 +3,7 @@ package com.Task.flows;
 import co.paralleluniverse.fibers.Suspendable;
 import com.Task.contracts.CATContract;
 import com.Task.states.TaskState;
-import com.google.common.collect.ImmutableSet;
+//import com.google.common.collect.ImmutableSet;
 import net.corda.core.flows.*;
 import net.corda.core.identity.Party;
 import net.corda.core.transactions.SignedTransaction;
@@ -92,7 +92,7 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
         progressTracker.setCurrentStep(GATHERING_SIGS);
         //Send the state to counterparty and receive with signatures
         FlowSession TaskSession = initiateFlow(subContractor);
-        SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(TaskSession), CollectSignaturesFlow.Companion.tracker()));
+        //SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(TaskSession), CollectSignaturesFlow.Companion.tracker()));
         //Stage5
         progressTracker.setCurrentStep(FINALISING_TRANSACTION);
         return subFlow(new FinalityFlow(TaskTxn, TaskSession));
