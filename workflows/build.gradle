@@ -59,6 +59,7 @@ dependencies {
     cordapp project(":contracts")
     //Gradle dependencies.
 //    compile group 'com.google.guava' name 'guava' version '29.0-jre'
+    cordaCompile "com.google.guava:guava:29.0-jre"
 }
 
 task integrationTest(type: Test, dependsOn: []) {
