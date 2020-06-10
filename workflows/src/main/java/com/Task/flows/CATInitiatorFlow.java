@@ -20,7 +20,7 @@ import java.time.Instant;
 @StartableByRPC
 public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
     private final Party Client;
-    private final Party mainContractor;
+//    private final Party mainContractor;
     private final Party subContractor;
     private final int taskID;
     private final String taskDesc;
@@ -50,10 +50,9 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
             FINALISING_TRANSACTION
     );
 
-
     public CATInitiatorFlow(Party Client, Party mainContractor, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
         this.Client = Client;
-        this.mainContractor = mainContractor;
+//        this.mainContractor = mainContractor;
         this.subContractor = subContractor;
         this.taskID = taskID;
         this.taskDesc = taskDesc;
@@ -71,8 +70,10 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
     @Suspendable
     @Override
     public SignedTransaction call() throws FlowException {
+        final Party Notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
+
         // Initiator flow logic goes here.
-        if (getOurIdentity().getName().getOrganisation().equals("mainContractor")) {
+        if (getOurIdentity().getName().getOrganisation().equals("MainContractor")) {
             System.out.println("Main contractor is the initiator.");
         } else {
             throw new FlowException("Not initiated by the main contractor");
@@ -81,7 +82,7 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
         //Stage1
         progressTracker.setCurrentStep(GENERATING_TRANSACTION);
         //Generating unsigned task
-        TransactionBuilder txBuilder = new TransactionBuilder(Client).addOutputState(outputState,ID).addCommand(new CATContract.Task(),getOurIdentity().getOwningKey());
+        TransactionBuilder txBuilder = new TransactionBuilder(Notary).addOutputState(outputState,ID).addCommand(new CATContract.Task(),getOurIdentity().getOwningKey());
         //Stage2
         progressTracker.setCurrentStep(VERIFYING_TRANSACTION);
         txBuilder.verify(getServiceHub());
