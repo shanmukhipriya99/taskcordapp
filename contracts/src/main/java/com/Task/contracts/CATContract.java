@@ -49,13 +49,13 @@ public class CATContract implements Contract {
             requireThat(require -> {
                 require.using("Amount must be positive", taskState.getAmount() > 0);
                 require.using("Deadline must should be a future data", taskState.getDeadline().isAfter(Instant.now()));
-                //require.using("Can be initiated by main contractor only", taskState.);
+                require.using("Can be initiated by main contractor only", taskState.getMainContractor().getName().getOrganisation().equals("MainContractor"));
                 return null;
             });
             // Signer Rules
             PublicKey clientKey = taskState.getClient().getOwningKey();
-            PublicKey mainKey = taskState.getClient().getOwningKey();
-            PublicKey subKey = taskState.getClient().getOwningKey();
+            PublicKey mainKey = taskState.getMainContractor().getOwningKey();
+            PublicKey subKey = taskState.getSubContractor().getOwningKey();
             if (!(reqSigners.contains(clientKey))) {
                 throw new IllegalArgumentException("Client must sign.");
             }

@@ -50,7 +50,7 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
             FINALISING_TRANSACTION
     );
 
-    public CATInitiatorFlow(Party Client, Party mainContractor, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
+    public CATInitiatorFlow(Party Client, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
         this.Client = Client;
 //        this.mainContractor = mainContractor;
         this.subContractor = subContractor;
@@ -70,14 +70,15 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
     @Suspendable
     @Override
     public SignedTransaction call() throws FlowException {
-        final Party Notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
 
         // Initiator flow logic goes here.
-        if (getOurIdentity().getName().getOrganisation().equals("MainContractor")) {
-            System.out.println("Main contractor is the initiator.");
-        } else {
-            throw new FlowException("Not initiated by the main contractor");
-        }
+//        if (getOurIdentity().getName().getOrganisation().equals("MainContractor")) {
+//            System.out.println("Main contractor is the initiator.");
+//        } else {
+//            throw new FlowException("Not initiated by the main contractor");
+//        }
+        final Party Notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
+
         TaskState outputState = new TaskState(Client, getOurIdentity(), subContractor, taskID, taskDesc, amount, assignee, deadline);
         //Stage1
         progressTracker.setCurrentStep(GENERATING_TRANSACTION);
@@ -93,11 +94,12 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
         //Stage4
         progressTracker.setCurrentStep(GATHERING_SIGS);
         //Send the state to counterparty and receive with signatures
-        FlowSession TaskSession = initiateFlow(subContractor);
-        final SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(TaskSession), CollectSignaturesFlow.Companion.tracker()));
+        FlowSession SubSession = initiateFlow(subContractor);
+        FlowSession ClientSession = initiateFlow(Client);
+        final SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(SubSession, ClientSession), CollectSignaturesFlow.Companion.tracker()));
         //Stage5
         progressTracker.setCurrentStep(FINALISING_TRANSACTION);
-        return subFlow(new FinalityFlow(fullySignedTx, ImmutableSet.of(TaskSession)));
+        return subFlow(new FinalityFlow(fullySignedTx, ImmutableSet.of(SubSession, ClientSession)));
 
     }
 }
