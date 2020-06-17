@@ -29,7 +29,7 @@ public class CATContract implements Contract {
         Command command = tx.getCommand(0);
         CommandData commandType = command.getValue();
         List<PublicKey> reqSigners = command.getSigners();
-        if (commandType instanceof Task) {
+        if (commandType instanceof CATContract.Commands) {
             // Shape Rules
             if (tx.getInputStates().size() != 0) {
                 throw new IllegalArgumentException("No input required");
@@ -49,16 +49,17 @@ public class CATContract implements Contract {
             requireThat(require -> {
                 require.using("Amount must be positive", taskState.getAmount() > 0);
                 require.using("Deadline must should be a future data", taskState.getDeadline().isAfter(Instant.now()));
-                require.using("Can be initiated by main contractor only", taskState.getMainContractor().getName().getOrganisation().equals("MainContractor"));
+//                require.using("Can be initiated by main contractor only", taskState.getMainContractor().getName().getOrganisation().equals("MainContractor"));
+//                require.using("Can be initiated by main contractor only", tx.getInputs().contains();
                 return null;
             });
             // Signer Rules
-            PublicKey clientKey = taskState.getClient().getOwningKey();
+//            PublicKey clientKey = taskState.getClient().getOwningKey();
             PublicKey mainKey = taskState.getMainContractor().getOwningKey();
             PublicKey subKey = taskState.getSubContractor().getOwningKey();
-            if (!(reqSigners.contains(clientKey))) {
-                throw new IllegalArgumentException("Client must sign.");
-            }
+//            if (!(reqSigners.contains(clientKey))) {
+//                throw new IllegalArgumentException("Client must sign.");
+//            }
             if (!(reqSigners.contains(mainKey))) {
                 throw new IllegalArgumentException("Main contractor must sign.");
             }
@@ -67,11 +68,11 @@ public class CATContract implements Contract {
             }
         }
     }
-    public static class Task implements CommandData {
-    }
+//    public static class Task implements CommandData {
+//    }
 
     // Used to indicate the transaction's intent.
-//    public interface Commands extends CommandData {
-//        class Action implements Commands {}
-//    }
+    public interface Commands extends CommandData {
+        class Issue implements Commands {}
+    }
 }

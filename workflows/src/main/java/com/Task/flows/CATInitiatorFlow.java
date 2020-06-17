@@ -19,8 +19,7 @@ import java.time.Instant;
 @InitiatingFlow
 @StartableByRPC
 public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
-    private final Party Client;
-//    private final Party mainContractor;
+//    private final Party Client;
     private final Party subContractor;
     private final int taskID;
     private final String taskDesc;
@@ -50,9 +49,8 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
             FINALISING_TRANSACTION
     );
 
-    public CATInitiatorFlow(Party Client, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
-        this.Client = Client;
-//        this.mainContractor = mainContractor;
+    public CATInitiatorFlow(/*Party Client,*/ Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
+//        this.Client = Client;
         this.subContractor = subContractor;
         this.taskID = taskID;
         this.taskDesc = taskDesc;
@@ -79,11 +77,11 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
 //        }
         final Party Notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
 
-        TaskState outputState = new TaskState(Client, getOurIdentity(), subContractor, taskID, taskDesc, amount, assignee, deadline);
+        TaskState outputState = new TaskState(/*Client, */getOurIdentity(), subContractor, taskID, taskDesc, amount, assignee, deadline);
         //Stage1
         progressTracker.setCurrentStep(GENERATING_TRANSACTION);
         //Generating unsigned task
-        TransactionBuilder txBuilder = new TransactionBuilder(Notary).addOutputState(outputState,ID).addCommand(new CATContract.Task(),getOurIdentity().getOwningKey());
+        TransactionBuilder txBuilder = new TransactionBuilder(Notary).addOutputState(outputState,ID).addCommand(new CATContract.Commands.Issue(),getOurIdentity().getOwningKey(), subContractor.getOwningKey()/*, Client.getOwningKey()*/);
         //Stage2
         progressTracker.setCurrentStep(VERIFYING_TRANSACTION);
         txBuilder.verify(getServiceHub());
@@ -95,11 +93,11 @@ public class CATInitiatorFlow extends FlowLogic<SignedTransaction> {
         progressTracker.setCurrentStep(GATHERING_SIGS);
         //Send the state to counterparty and receive with signatures
         FlowSession SubSession = initiateFlow(subContractor);
-        FlowSession ClientSession = initiateFlow(Client);
-        final SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(SubSession, ClientSession), CollectSignaturesFlow.Companion.tracker()));
+//        FlowSession ClientSession = initiateFlow(Client);
+        final SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(TaskTxn, ImmutableSet.of(SubSession/*, ClientSession*/), CollectSignaturesFlow.Companion.tracker()));
         //Stage5
         progressTracker.setCurrentStep(FINALISING_TRANSACTION);
-        return subFlow(new FinalityFlow(fullySignedTx, ImmutableSet.of(SubSession, ClientSession)));
+        return subFlow(new FinalityFlow(fullySignedTx, ImmutableSet.of(SubSession/*, ClientSession*/)));
 
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 // *********
 @BelongsToContract(CATContract.class)
 public class TaskState implements ContractState {
-    private final Party client;
+//    private final Party client;
     private final Party mainContractor;
     private final Party subContractor;
     private final int taskID;
@@ -23,11 +23,10 @@ public class TaskState implements ContractState {
     private final String assignee;
     private final Instant deadline;
 
-    public TaskState(Party client, Party mainContractor, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
-        this.client = client;
+    public TaskState(/*Party client,*/ Party mainContractor, Party subContractor, int taskID, String taskDesc, int amount, String assignee, Instant deadline) {
+//        this.client = client;
         this.mainContractor = mainContractor;
         this.subContractor = subContractor;
-
         this.taskID = taskID;
         this.taskDesc = taskDesc;
         this.amount = amount;
@@ -35,9 +34,9 @@ public class TaskState implements ContractState {
         this.deadline = deadline;
     }
 
-    public Party getClient() {
-        return client;
-    }
+//    public Party getClient() {
+//        return client;
+//    }
 
     public Party getMainContractor() {
         return mainContractor;
@@ -69,6 +68,6 @@ public class TaskState implements ContractState {
 
     @Override
     public List<AbstractParty> getParticipants() {
-        return Arrays.asList(client, mainContractor, subContractor);
+        return Arrays.asList(/*client, */mainContractor, subContractor);
     }
 }

@@ -8,18 +8,32 @@ import net.corda.core.transactions.SignedTransaction;
 // * Responder flow *
 // ******************
 @InitiatedBy(CATInitiatorFlow.class)
-public class CATResponderFlow extends FlowLogic<SignedTransaction> {
-    private FlowSession counterpartySession;
+public class CATResponderFlow extends FlowLogic<Void> {
+    private final FlowSession SubSession;
+//    private final FlowSession ClientSession;
 
-    public CATResponderFlow(FlowSession counterpartySession) {
-        this.counterpartySession = counterpartySession;
+    public CATResponderFlow(FlowSession SubSession/*, FlowSession ClientSession*/) {
+        this.SubSession = SubSession;
+//        this.ClientSession = ClientSession;
     }
 
     @Suspendable
     @Override
-    public SignedTransaction call() throws FlowException {
+    public Void call() throws FlowException {
         // Responder flow logic goes here.
-        System.out.println("Task received from: " + counterpartySession.getCounterparty().getName().getOrganisation());
-        return subFlow(new ReceiveFinalityFlow(counterpartySession));
+        SignedTransaction signedtx1 = subFlow(new SignTransactionFlow(SubSession) {
+            protected void checkTransaction(SignedTransaction stx) throws FlowException {
+                // Implement responder flow transaction checks here
+            }
+        });
+//        SignedTransaction signedtx2 = subFlow(new SignTransactionFlow(ClientSession) {
+//            protected void checkTransaction(SignedTransaction stx) throws FlowException {
+//                // Implement responder flow transaction checks here
+//            }
+//        });
+//        System.out.println("Task received from: " + counterpartySession.getCounterparty().getName().getOrganisation());
+        subFlow(new ReceiveFinalityFlow(SubSession, signedtx1.getId()));
+//        subFlow(new ReceiveFinalityFlow(ClientSession, signedtx2.getId()));
+        return null;
     }
 }
