@@ -7,9 +7,6 @@
 Welcome to the Java CorDapp template. The CorDapp template is a stubbed-out CorDapp that you can use to bootstrap 
 your own CorDapps.
 
-**This is the Java version of the CorDapp template. The Kotlin equivalent is 
-[here](https://github.com/corda/cordapp-template-kotlin/).**
-
 # Pre-Requisites
 
 See https://docs.corda.net/getting-set-up.html.
@@ -140,3 +137,12 @@ You should extend this template as follows:
 
 For a guided example of how to extend this template, see the Hello, World! tutorial 
 [here](https://docs.corda.net/hello-world-introduction.html).
+
+# Abstract 
+The population pertaining to the entire world has been increasing steadily over the past decades. One of the most basic requirements for the survival of humans is a shelter that could be anything from a small hut to a luxurious skyscraper, ultimately giving the construction industry a major role in this process. In comparison to many other industries, the construction industry can be termed as one of the world’s most fragmented sectors due to the scattered and complex supply chain. Furthermore, this complexity moves a step higher while keeping track of the various factors involved, like the clients, consultants, architects, engineers, main contractors, subcontractors, material suppliers, etc. Therefore, a massive amount of effort and resources are required for carrying out different activities like keeping track of the work progress, schedule, costs, and payments. Also, the complex supply chain of the globally manufactured construction products has to be managed for the sake of meeting the quality requirements and customer satisfaction. But the lack of accountability in the construction industry sometimes leads to various types of faults, delays, and even accidents at some stages. Keeping these main points in mind, this paper introduces a key to this dispute with the help of Corda, a distributed ledger platform for permissioned networks, inspired by blockchain technology. This helps in maintaining transparency amongst the actors involved in this industry, thus preventing any form of miscommunication.
+
+**Keywords:** Construction Industry, Supply Chain, Corda, Distributed Ledger, Blockchain
+
+# Basic Workflow
+![image](https://user-images.githubusercontent.com/37501487/115180532-66f8a380-a0f3-11eb-91c4-b1c85eeb11bd.png)
+
